@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% block title %}
+        FreshCart Clone
+      {% endblock %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/core/base.css' %}" />
+
+    {% block extra_css %}
+
+    {% endblock %}
+  </head>
+  <body>
+    <div>
+      <!-- Header -->
+      <header class="bg-white py-2 d-flex justify-content-between align-items-center" style="margin: 0.5rem 10rem;">
+        <div class="d-flex align-items-center gap-3">
+          <a class="navbar-brand fw-bold text-success" href="{% url 'home' %}"><i class="fas fa-shopping-cart me-2"></i>FreshCart</a>
+        </div>
+        <!-- search -->
+        <form class="d-flex w-50 mx-3" method="GET" action="{% url 'search_results' %}">
+          <input class="form-control me-2" type="search" name="q" placeholder="Search for products" />
+          <button class="btn btn-outline-success" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <button class="btn btn-outline-success" type="submit" style="margin-left: -5rem;">Location</button>
+        <div class="d-flex align-items-center gap-3">
+          <a href="{% url 'wishlist' %}" class="text-dark position-relative">
+            <i class="far fa-heart fs-5"></i>
+            {% if wishlist_count > 0 %}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">{{ wishlist_count }}</span>
+            {% endif %}
+          </a>
+
+          <ul class="navbar-nav ms-1">
+            {% if request.session.is_authenticated %}
+              <li class="nav-item dropdown d-flex align-items-center guest-dropdown-hover position-relative">
+                <!-- Welcome Text with Primary Color -->
+                <span class="nav-link text-primary active me-2">
+                  Welcome,
+                  <span class="text-dark fs-5">{{ request.session.first_name }}</span>
+                </span>
+
+                <div class="dropdown" onmouseenter="this.classList.add('show'); this.querySelector('.dropdown-menu').classList.add('show');" onmouseleave="this.classList.remove('show'); this.querySelector('.dropdown-menu').classList.remove('show');">
+                  <!-- Icon and Dropdown Toggle -->
+                  <a href="#" class="nav-link text-dark" id="accountDropdown" role="button" aria-expanded="false"><i class="far fa-user fs-5 text-dark"></i></a>
+
+                  <!-- Dropdown Menu -->
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
+                    <li>
+                      <a class="dropdown-item text-dark" href="{% url 'profile' %}">Profile</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-dark" href="{% url 'change_password' %}">Change Password</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-dark" href="#">Orders</a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-success" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-danger" href="{% url 'delete_account' %}">Delete Account</a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            {% else %}
+              <li class="nav-item dropdown guest-dropdown-hover">
+                <a href="#" class="nav-link text-dark" id="guestDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-user fs-5"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+                  </li>
+                </ul>
+              </li>
+            {% endif %}
+          </ul>
+          <a href="{% url 'view_cart' %}" class="text-dark position-relative">
+            <i class="fas fa-shopping-cart fs-5"></i>
+            {% if cart_item_count > 0 %}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">{{ cart_item_count }}</span>
+            {% endif %}
+          </a>
+        </div>
+      </header>
+
+      <!-- Navbar -->
+      {% include 'core/navbar.html' %}
+      <hr />
+
+      <!-- Hero Banner -->
+      <section class="position-relative bg-light m-5 p-1 content-container">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="{% static 'images/grocery-girl.png' %}" class="d-block w-100" style="height: 60vh; object-fit: cover; filter: brightness(70%);" alt="Slide 1" />
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'images/grocery-fruits.png' %}" class="d-block w-100" style="height: 60vh; object-fit: cover; filter: brightness(70%);" alt="Slide 2" />
+            </div>
+          </div>
+          <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="z-index: 10;">
+            <div class="ms-5 text-white" style="max-width: 600px;">
+              <span class="badge bg-warning text-dark mb-2">Opening Sale Discount 50%</span>
+              <h1 class="display-4 fw-bold">SuperMarket For<br />Fresh Grocery</h1>
+              <p class="lead">A new model for online grocery shopping with convenient home delivery.</p>
+              <a href="#" class="btn btn-secondary">Shop Now <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Content -->
+      <main class="my-4 content-container">
+        {% block content %}
+
+        {% endblock %}
+      </main>
+
+      <!-- Footer -->
+      {% include 'core/footer.html' %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+
+    {% block extra_js %}
+
+    {% endblock %}
+  </body>
+</html>

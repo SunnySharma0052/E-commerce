@@ -1,0 +1,78 @@
+{% extends 'accounts/account_navbar.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="row align-items-center">
+      <!-- Left Side: Image -->
+      <div class="col-md-6 d-none d-md-block">
+        <img src="{% static 'images/login.jpg' %}" alt="Login Image" class="img-fluid rounded" />
+      </div>
+
+      <!-- Right Side: Form -->
+      <div class="col-md-5 ms-md-5">
+        <h2 class="text-center">Sign in to FreshCart</h2>
+        <p class="text-center">Welcome back to FreshCart! Enter your email to get started.</p>
+
+        <!-- Flash Messages -->
+        {% if messages %}
+          <div id="alert-box">
+            {% for message in messages %}
+              <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" class="p-4 border border-3 border-success rounded shadow-sm bg-light" enctype="multipart/form-data" novalidate onsubmit="return validateRememberMe()">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="emailid" class="form-label">Email:</label>
+            <input type="email" id="emailid" name="emailid" class="form-control" placeholder="Enter your email" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required />
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <div class="form-check mb-3">
+              <input type="checkbox" id="remember" name="remember" class="form-check-input" />
+              <label for="remember" class="form-check-label">Remember me</label>
+              <div id="rememberError" class="invalid-feedback" style="display: none;">Please check "Remember me" to continue.</div>
+            </div>
+
+            <p class="mt-3">
+              Forgot Password?
+              <a href="{% url 'password_forget' %}" class="text-decoration-none">Reset It</a>
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 mt-3">Sign In</button>
+        </form>
+
+        <p class="text-center mt-3">
+          Don't have an account? <a href="{% url 'signup' %}" class="text-decoration-none">Sign up here.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function validateRememberMe() {
+      var rememberCheckbox = document.getElementById('remember')
+      var errorText = document.getElementById('rememberError')
+    
+      if (!rememberCheckbox.checked) {
+        rememberCheckbox.classList.add('is-invalid')
+        errorText.style.display = 'block'
+        return false
+      } else {
+        rememberCheckbox.classList.remove('is-invalid')
+        errorText.style.display = 'none'
+        return true
+      }
+    }
+  </script>
+{% endblock %}

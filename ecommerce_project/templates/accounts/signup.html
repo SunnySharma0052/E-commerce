@@ -1,0 +1,111 @@
+{% extends 'accounts/account_navbar.html' %}
+{% load static %}
+
+{% block content %}
+  <section class="py-4" style="background-color: #f8f9fa;">
+    <div class="container">
+      <div class="row align-items-stretch" style="min-height: 500px;">
+        <!-- important: align-items-stretch -->
+
+        <!-- Left side: Image -->
+        <div class="col-md-6 d-none d-md-flex align-items-center">
+          <img src="{% static 'images/signup.jpg' %}" alt="Signup Image" class="img-fluid rounded w-100 h-100 object-fit-cover" style="border-radius: 1rem;" />
+        </div>
+
+        <!-- Right side: Signup Form -->
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="card shadow-lg border-0 w-100" style="border-radius: 1rem;">
+            <div class="card-body p-4">
+              <div class="position-relative text-center mb-4">
+                <h3 class="mb-0 mt-1">Sign Up</h3>
+                <a href="{% url 'home' %}" class="btn-close position-absolute top-0 end-0 mt-1 me-2" aria-label="Close"></a>
+              </div>
+
+              <!-- Display messages -->
+              {% if messages %}
+                <div class="alert alert-danger">
+                  {% for message in messages %}
+                    <div>{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <form method="POST" enctype="multipart/form-data" novalidate onsubmit="return validateRememberMe()">
+                {% csrf_token %}
+
+                <!-- First Name -->
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" required />
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required />
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                  <input type="email" class="form-control" id="emailid" name="emailid" placeholder="Email Address" required />
+                </div>
+
+                <!-- Phone -->
+                <div class="mb-3">
+                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required />
+                </div>
+
+                <!-- Address -->
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="address" name="address" placeholder="Address" />
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required />
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                  <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required />
+                </div>
+
+                <!-- Remember Me -->
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="remember" name="remember" />
+                  <label class="form-check-label" for="remember">Remember me</label>
+                  <div id="rememberError" class="invalid-feedback" style="display: none;">Please check "Remember me" to continue.</div>
+                </div>
+
+                <!-- Terms -->
+                <p class="small text-muted mt-2 mb-4">
+                  By signing up, you agree to our
+                  <a href="#" class="text-success">Terms of Service</a> and
+                  <a href="#" class="text-success">Privacy Policy</a>.
+                </p>
+
+                <!-- Submit -->
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-success">Register</button>
+                </div>
+              </form>
+
+              <div class="text-center mt-4">
+                Already have an account? <a href="{% url 'login' %}" class="text-success">Sign In</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function validateRememberMe() {
+      var rememberCheckbox = document.getElementById('remember')
+      if (!rememberCheckbox.checked) {
+        alert('Please check "Remember me" before signing up.')
+        return false // Prevent form submission
+      }
+      return true // Allow form submission
+    }
+  </script>
+{% endblock %}

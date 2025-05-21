@@ -1,0 +1,219 @@
+<a href="{% url 'signup' %}" class="text-dark" id="signup-link"><i class="far fa-user fs-5"></i></a> <!-- account -->
+
+
+
+
+<!-- Signup Modal Form with script -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 1rem;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Display success or error messages dynamically -->
+                <div id="message-container"></div>
+
+                <!-- SIGNUP FORM -->
+                <form id="signup-form" method="POST" enctype="multipart/form-data" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" name="firstname" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" name="lastname" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="emailid" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-control" name="phone" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-control" name="address" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" name="confirm_password" required />
+                    </div>
+                    <!-- Terms -->
+                    <p class="small text-muted mt-2 mb-4">
+                        By Signup, you agree to our
+                        <a href="#" class="text-success">Terms of Service</a> &
+                        <a href="#" class="text-success">Privacy Policy</a>.
+                    </p>
+
+                    <!-- Submit -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success">Register</button>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        Already have an account? <a href="{% url 'login' %}" class="text-success">Sign In</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const signupLink = document.getElementById('signup-link')
+        const signupModal = new bootstrap.Modal(document.getElementById('signupModal'))
+        const signupForm = document.getElementById('signup-form')
+        const messageContainer = document.getElementById('message-container')
+
+        signupLink.addEventListener('click', function (e) {
+            e.preventDefault()
+            signupModal.show()
+        })
+
+        signupForm.addEventListener('submit', function (e) {
+            e.preventDefault()
+
+            const formData = new FormData(signupForm)
+
+            fetch("{% url 'signup' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                },
+                body: formData
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    messageContainer.innerHTML = '' // Clear previous messages
+                    if (data.success) {
+                        // Show the success message
+                        messageContainer.innerHTML = `<div class="alert alert-success">${data.message}</div>`
+
+                        // After a short delay, close the modal and redirect to login page
+                        setTimeout(function () {
+                            signupModal.hide()
+                            window.location.href = "{% url 'login' %}" // Redirect to login after success
+                        }, 1500) // 1500ms (1.5 seconds) delay before redirecting
+                    } else {
+                        // Show the error message
+                        messageContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error)
+                })
+        })
+    }) 
+</script>
+
+<!-- text end signup model form with script -->
+
+
+
+
+
+
+
+<!-- views.py  -->
+
+
+@require_POST
+@csrf_exempt
+def signup_view(request):
+    if request.method == 'POST':
+        is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+        first_name = request.POST.get('firstname')
+        last_name = request.POST.get('lastname')
+        email = request.POST.get('emailid')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # Server-side Validations
+        if password != confirm_password:
+            error = 'Passwords do not match.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        if len(phone) != 10 or not phone.isdigit():
+            error = 'Phone number must be exactly 10 digits.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        if len(first_name) > 50 or len(last_name) > 50:
+            error = 'First Name and Last Name should not exceed 50 characters.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        if len(address) > 80:
+            error = 'Address should not exceed 80 characters.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        if len(password) < 8:
+            error = 'Password must be at least 8 characters long.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        # Check if email or phone already exists
+        if User.objects.filter(email_id=email).exists():
+            error = 'Email is already registered.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        if User.objects.filter(phone=phone).exists():
+            error = 'Phone number is already registered.'
+            if is_ajax:
+                return JsonResponse({'success': False, 'error': error})
+            messages.error(request, error)
+            return redirect('signup')
+
+        # Create new user
+        user = User.objects.create(
+            first_name=first_name,
+            last_name=last_name,
+            email_id=email,
+            phone=phone,
+            address=address,
+            password=make_password(password),
+        )
+
+        if not is_ajax:
+            messages.success(request, 'Signup Successful! Please log in.')
+            return redirect('login')
+
+        return JsonResponse({'success': True, 'message': 'Account created successfully!'})
+
+    else:
+        return render(request, 'accounts/signup.html')
+    
+
+
+    # 1st ye form 
+    # 2nd payment 
+    # 3rd order
+    # 4th product details me multiple images show kr wani h 
+    

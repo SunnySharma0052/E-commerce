@@ -1,0 +1,319 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="row">
+      <!-- Product Image Column -->
+      <div class="col-md-6">
+        <!-- Top Thumbnails -->
+        <div class="d-flex justify-content-center mb-3">
+          {% for img in product.gallery_images.all %}
+            <img src="{{ img.image.url }}" class="img-thumbnail me-2" width="70" />
+          {% endfor %}
+        </div>
+
+        <!-- Main Image with Zoom on Hover -->
+        <div class="position-relative">
+          <img src="{{ product.image.url }}" class="img-fluid product-img-zoom" alt="{{ product.name }}" />
+        </div>
+
+        <!-- Bottom Thumbnails -->
+        <div class="mt-3 d-flex justify-content-center">
+          {% for img in product.gallery_images.all %}
+            <img src="{{ img.image.url }}" class="img-thumbnail me-2" width="70" />
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Product Info Column -->
+      <div class="col-md-6">
+        <p class="text-muted">{{ product.category.name }}</p>
+        <h2>{{ product.name }}</h2>
+
+        <!-- Rating & Reviews -->
+        <p>
+          ⭐⭐⭐⭐☆ <span class="text-muted">(4 reviews)</span>
+        </p>
+
+        <!-- Price & Discount in one line -->
+        <p>
+          <span class="fw-bold text-success ms-2">${{ product.price }}</span>
+          <span class="text-muted text-decoration-line-through">${{ product.old_price }}</span>
+          <span class="badge bg-success ms-2">10% OFF</span>
+        </p>
+
+        <hr />
+
+        <!-- Size and Color Options -->
+        <!-- Size Options -->
+        {% if size_options %}
+          <div class="mb-3">
+            <label class="fw-bold me-2 d-block">Size:</label>
+            <div class="btn-group" role="group" aria-label="Size options">
+              {% for size in size_options %}
+                {% with size_id='size'|add:size %}
+                  {% if forloop.first %}
+                    <input type="radio" class="btn-check" name="size" id="{{ size_id }}" autocomplete="off" checked />
+                  {% else %}
+                    <input type="radio" class="btn-check" name="size" id="{{ size_id }}" autocomplete="off" />
+                  {% endif %}
+                  <label class="btn btn-outline-primary" for="{{ size_id }}">{{ size }}</label>
+                {% endwith %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Color Options -->
+        {% if color_options %}
+          <div class="mb-3">
+            <label class="fw-bold me-2 d-block">Color:</label>
+            <div class="btn-group" role="group" aria-label="Color options">
+              {% for color in color_options %}
+                {% with color_id='color'|add:color %}
+                  {% if forloop.first %}
+                    <input type="radio" class="btn-check" name="color" id="{{ color_id }}" autocomplete="off" checked />
+                  {% else %}
+                    <input type="radio" class="btn-check" name="color" id="{{ color_id }}" autocomplete="off" />
+                  {% endif %}
+                  <label class="btn btn-outline-success" for="{{ color_id }}">{{ color }}</label>
+                {% endwith %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Quantity Selector -->
+        <!-- Quantity Selector -->
+        <form action="{% url 'update_quantity' product.id %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="increase" />
+          <button type="submit" class="btn btn-sm btn-outline-success">+</button>
+        </form>
+
+        <span class="mx-2">{{ cart_item.quantity|default:'1' }}</span>
+
+        <form action="{% url 'update_quantity' product.id %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="decrease" />
+          <button type="submit" class="btn btn-sm btn-outline-danger">−</button>
+        </form>
+        <br /><br />
+        <!-- Add to Cart, Wishlist and Compare -->
+        <div class="d-flex align-items-center mb-4">
+          <div class="me-2 w-50">
+            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-success w-100">Add to Cart</a>
+          </div>
+          <div class="me-2 w-50">
+            <a href="{% url 'checkout' %}" class="btn btn-outline-secondary w-100">Buy Now</a>
+          </div>
+          <div class="d-flex">
+            <a href="{% url 'add_to_wishlist' product.id %}" class="btn btn-outline-secondary w-100"><i class="bi bi-heart"></i></a> &nbsp;
+            <a href="#" class="btn btn-outline-secondary w-100"><i class="bi bi-bar-chart"></i></a>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Product Meta Info -->
+        <div>
+          <table class="table no-border">
+            <tbody>
+              <tr>
+                <th scope="row">Product Code:</th>
+                <td class="ms-8">{{ product_detail.product_code }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Availability:</th>
+                <td class="ms-8">
+                  {% if product_detail.availability_text|lower == 'out of stock' %}
+                    <span class="text-danger">{{ product_detail.availability_text }}</span>
+                  {% else %}
+                    <span class="text-success">{{ product_detail.availability_text }}</span>
+                  {% endif %}
+                </td>
+              </tr>
+
+              <tr>
+                <th scope="row">Type:</th>
+                <td class="ms-8">{{ product_detail.product_type }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Shipping:</th>
+                <td class="ms-8">{{ product_detail.shipping_time }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr />
+
+        <!-- Share Button -->
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-secondary share-btn">
+            <span>Share</span> <i class="bi bi-share"></i>
+            <div class="share-icons">
+              <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="me-2"><i class="bi bi-twitter"></i></a>
+              <a href="#"><i class="bi bi-whatsapp"></i></a>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#details">Product Details</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link {% if not product_detail.weight %}d-none{% endif %}" data-bs-toggle="tab" data-bs-target="#info">Information</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#review">Reviews</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#seller">Seller Info</button>
+      </li>
+    </ul>
+
+    <div class="tab-content p-3 border" id="myTabContent">
+      <div class="tab-pane fade show active" id="details">
+        <table class="table table-borderless">
+          <tbody>
+            <tr>
+              <th>{{ product_detail.short_description }}</th>
+              <td>{{ product_detail.long_description }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Storage:</th>
+              <td>{{ product_detail.storage_tips }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Units:</th>
+              <td>{{ product_detail.unit }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Seller:</th>
+              <td>{{ product_detail.seller_name }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-muted small">Disclaimer: Image shown is for representation. Efforts made to maintain accuracy of displayed info.</p>
+      </div>
+
+      <!-- Information Tab Field (conditionally display the entire tab and content) -->
+      {% if product_detail.weight or product_detail.ingredient_type or product_detail.brand or product_detail.package_quantity or product_detail.form or product_detail.manufacturer or product_detail.net_quantity or product_detail.dimensions or product_detail.asin or product_detail.best_sellers_rank or product_detail.date_first_available or product_detail.item_weight or product_detail.generic_name %}
+        <div class="tab-pane fade" id="info">
+          <h4 class="mb-3">Product Information</h4>
+          <div class="d-flex">
+            <div class="me-4">
+              <table class="table table-sm table-striped">
+                <tbody>
+                  {% if product_detail.weight %}
+                    <tr>
+                      <th scope="row">Weight</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.weight }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.ingredient_type %}
+                    <tr>
+                      <th scope="row">Ingredient Type</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.ingredient_type }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.brand %}
+                    <tr>
+                      <th scope="row">Brand</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.brand }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.package_quantity %}
+                    <tr>
+                      <th scope="row">Item Package Quantity</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.package_quantity }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.form %}
+                    <tr>
+                      <th scope="row">Form</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.form }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.manufacturer %}
+                    <tr>
+                      <th scope="row">Manufacturer</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.manufacturer }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.net_quantity %}
+                    <tr>
+                      <th scope="row">Net Quantity</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.net_quantity }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.dimensions %}
+                    <tr>
+                      <th scope="row">Product Dimensions</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.dimensions }}</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+
+            <div>
+              <table class="table table-sm table-striped">
+                <tbody>
+                  {% if product_detail.asin %}
+                    <tr>
+                      <th scope="row">ASIN</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.asin }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.best_sellers_rank %}
+                    <tr>
+                      <th scope="row">Best Sellers Rank</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.best_sellers_rank }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.date_first_available %}
+                    <tr>
+                      <th scope="row">Date First Available</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.date_first_available }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.item_weight %}
+                    <tr>
+                      <th scope="row">Item Weight</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.item_weight }}</td>
+                    </tr>
+                  {% endif %}
+                  {% if product_detail.generic_name %}
+                    <tr>
+                      <th scope="row">Generic Name</th>
+                      <td class="fs-6 ms-5 ps-5">{{ product_detail.generic_name }}</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="tab-pane fade show active" id="review">
+        <!-- Customer Reviews Section -->
+        <!-- ... your review section ... -->
+      </div>
+
+      <div class="tab-pane fade" id="seller">Seller info here.</div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="{% static 'css/products/product_detail.css' %}" />
+{% endblock %}

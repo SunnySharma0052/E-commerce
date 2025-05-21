@@ -1,0 +1,119 @@
+  /* Empty cart image bounce animation */
+  .empty-cart-img {
+    width: 250px;
+    height: auto;
+    animation: bounceIn 1.2s ease-in-out;
+  }
+
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.9) translateY(-20px);
+    }
+
+    60% {
+      opacity: 1;
+      transform: scale(1.05) translateY(10px);
+    }
+
+    100% {
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Primary button style */
+  .btn-primary {
+    background-color: #2196f3;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 10px 20px;
+  }
+
+  .btn-primary:hover {
+    background-color: #1976d2;
+  }
+
+  /* Recently viewed product card */
+  .recently-viewed-card {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+  }
+
+  /* Card image */
+  .recently-viewed-card img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  /* Card body */
+  .recently-viewed-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* Button styling for smaller buttons */
+  .recently-viewed-card .btn-sm {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    white-space: nowrap;
+  }
+
+  /* Ensure button alignment and equal size */
+  .recently-viewed-card .d-flex {
+    gap: 1.5rem;
+    justify-content: space-between;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Adjust Add to Cart and Buy Now buttons */
+  .recently-viewed-card .btn-outline-primary,
+  .recently-viewed-card .btn-primary {
+    flex: 1;
+    font-size: 0.85rem;
+    padding: 0.6rem 1.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  /* Adjust Add to Cart and Buy Now button styles */
+  .recently-viewed-card .w-100 {
+    width: 100%;
+  }
+
+  /* Ensure buttons are same size */
+  .recently-viewed-card .btn-outline-primary,
+  .recently-viewed-card .btn-primary {
+    width: 100%;
+    padding: 0.6rem 1.5rem;
+  }
+
+
+
+
+  .custom-carousel-btn {
+    background: none;
+    border: none;
+    pointer-events: none;
+    /* Prevent hover/click on surrounding area */
+
+    margin: 12rem -5rem 0 -5rem;
+  }
+
+  .custom-carousel-icon {
+    background-color: #000;
+    border-radius: 50%;
+    padding: 8px;
+    pointer-events: auto;
+    /* Enable only the icon for interaction */
+    transition: background-color 0.3s ease;
+  }
+
+  .custom-carousel-icon:hover {
+    background-color: #333;
+  }

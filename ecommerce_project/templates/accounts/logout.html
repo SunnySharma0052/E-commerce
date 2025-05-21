@@ -1,0 +1,46 @@
+{% extends 'accounts/account_navbar.html' %}
+
+{% block content %}
+  <div class="container d-flex flex-column justify-content-center align-items-center mt-5" style="min-height: 60vh;">
+    <!-- Display Django Messages (Logout Success Message) -->
+    {% if messages %}
+      <div class="alert alert-success alert-dismissible fade show w-100 text-center" role="alert">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
+
+    <div class="card shadow-sm p-4 text-center" style="max-width: 500px; width: 100%;">
+      <h2 class="mb-3 text-success">You’ve been logged out</h2>
+      <p class="mb-4">
+        Thank you for visiting. You’ll be redirected to the <a href="{% url 'home' %}">homepage</a> in <span id="countdown" class="fw-bold text-danger">5</span> seconds.
+      </p>
+      <div class="d-grid gap-2">
+        <a href="{% url 'home' %}" class="btn btn-outline-primary">Go to Homepage Now</a>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login Again</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let seconds = 5
+    const countdownEl = document.getElementById('countdown')
+    const redirect = () => (window.location.href = "{% url 'home' %}")
+    
+    const startCountdown = () => {
+      const timer = setInterval(() => {
+        seconds--
+        if (seconds <= 0) {
+          clearInterval(timer)
+          redirect()
+        } else {
+          countdownEl.textContent = seconds
+        }
+      }, 1000)
+    }
+    
+    window.onload = startCountdown
+  </script>
+{% endblock %}

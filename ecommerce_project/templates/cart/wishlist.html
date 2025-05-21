@@ -1,0 +1,46 @@
+{% extends 'cart/cart_navbar.html' %}
+{% load static %}
+
+{% block content %}
+  <section class="py-5">
+    <div class="container">
+      <h2 class="mb-4">My Wishlist</h2>
+
+      {% if wishlist_items %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          {% for item in wishlist_items %}
+            <div class="col">
+              <div class="card h-100 shadow-sm border-0">
+                <img src="{{ item.product.image.url }}" class="card-img-top" alt="{{ item.product.title }}" />
+                <div class="card-body">
+                  <h5 class="card-title text-truncate" title="{{ item.product.title }}">{{ item.product.title }}</h5>
+                  <p class="text-muted mb-2">{{ item.product.category.name }}</p>
+
+                  <!-- Price + old price + discount badge -->
+                  <p class="h6 mb-3 text-primary">
+                    {% if item.product.old_price %}
+                      <span class="text-muted text-decoration-line-through me-2">₹{{ item.product.old_price }}</span>
+                    {% endif %}₹{{ item.product.price }}
+                    {% if item.product.discount_percent %}
+                      <small class="badge bg-danger ms-2">{{ item.product.discount_percent }}% OFF</small>
+                    {% endif %}
+                  </p>
+
+                  <div class="d-flex gap-2 mb-2">
+                    <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-sm btn-success flex-fill">Add to Cart</a>
+                    <a href="#" class="btn btn-sm btn-primary flex-fill">Buy Now</a>
+                  </div>
+                  <a href="{% url 'remove_from_wishlist' item.product.id %}" class="btn btn-sm btn-outline-danger w-100">Remove</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="alert alert-info mt-4" role="alert">
+          Your wishlist is empty. <a href="{% url 'home' %}">Continue shopping</a>.
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endblock %}

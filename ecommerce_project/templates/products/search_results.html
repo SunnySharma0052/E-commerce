@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+  Search Results - ShopEasy
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h3 class="mb-4">Search Results for "<span class="text-primary">{{ query }}</span>"</h3>
+
+    {% if results %}
+      <div class="row row-cols-2 row-cols-md-4 g-4">
+        {% for product in results %}
+          <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+              <a href="{% url 'product_detail' product.slug %}"><img src="{{ product.image.url }}" class="card-img-top p-3" style="height: 180px; object-fit: contain;" alt="{{ product.name }}" /></a>
+              <div class="card-body">
+                <small class="text-muted">{{ product.category.name }}</small>
+                <h6 class="mt-2"><a href="{% url 'product_detail' product.slug %}" class="text-dark text-decoration-none">{{ product.name }}</a></h6>
+                <p class="mb-1 text-success fw-bold">₹{{ product.price }}</p>
+                {% if product.old_price %}
+                  <small class="text-muted text-decoration-line-through">₹{{ product.old_price }}</small>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">No products found matching your search query.</p>
+    {% endif %}
+  </div>
+{% endblock %}

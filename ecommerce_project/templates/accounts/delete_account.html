@@ -1,0 +1,85 @@
+{% extends 'accounts/account_navbar.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container py-5" style="min-height: 80vh;">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="card shadow-sm border-danger">
+          <div class="card-body text-center">
+            <h4 class="text-danger mb-3">Delete Your Account</h4>
+            <p class="text-muted">
+              This action is <strong>permanent</strong> and cannot be undone. Please confirm your identity.
+            </p>
+
+            <form method="post" id="deleteForm">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label class="form-label">Type <strong>DELETE</strong> to confirm:</label>
+                <input type="text" name="confirm_text" id="confirmText" class="form-control text-center" placeholder="DELETE" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Enter your password:</label>
+                <input type="password" name="password" id="passwordInput" class="form-control" placeholder="Your password" required />
+              </div>
+
+              <div class="form-check mb-3 text-start">
+                <input type="checkbox" class="form-check-input" id="rememberCheckbox" />
+                <label class="form-check-label" for="rememberCheckbox">Remember confirmation this session</label>
+              </div>
+
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
+              </div>
+            </form>
+          </div>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Note:</strong> Your account will be permanently deleted in <strong>30 days</strong>.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Remember confirm + password in sessionStorage if checkbox is ticked
+    const form = document.getElementById('deleteForm')
+    const remember = document.getElementById('rememberCheckbox')
+    const confirmInput = document.getElementById('confirmText')
+    const passwordInput = document.getElementById('passwordInput')
+    
+    // Load values from sessionStorage if present
+    window.onload = function () {
+      if (sessionStorage.getItem('remember_delete') === 'true') {
+        confirmInput.value = sessionStorage.getItem('confirm_text') || ''
+        passwordInput.value = sessionStorage.getItem('confirm_password') || ''
+        remember.checked = true
+      }
+    }
+    
+    form.addEventListener('submit', function () {
+      if (remember.checked) {
+        sessionStorage.setItem('remember_delete', 'true')
+        sessionStorage.setItem('confirm_text', confirmInput.value)
+        sessionStorage.setItem('confirm_password', passwordInput.value)
+      } else {
+        sessionStorage.removeItem('remember_delete')
+        sessionStorage.removeItem('confirm_text')
+        sessionStorage.removeItem('confirm_password')
+      }
+    })
+  </script>
+{% endblock %}

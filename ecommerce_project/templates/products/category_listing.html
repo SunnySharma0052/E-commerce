@@ -1,0 +1,216 @@
+{% load static %}
+
+{% block content %}
+  <div class="container mt-2" id="shop-by-category-page">
+    <div class="row">
+      <!-- Left Sidebar -->
+      <div class="col-md-20" id="shop-sidebar" style="padding-left: 1rem; padding-right: 1rem;">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" id="shop-breadcrumbs">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Shop/</li>
+            <li class="breadcrumb-item active" aria-current="page">Shop Grid</li>
+          </ol>
+        </nav>
+
+        <!-- Categories List -->
+        <div class="mb-2" id="category-list">
+          <h5>All Categories</h5>
+          <ul class="list-group" style="border: none; margin-left: -1rem;">
+            <!-- Remove border from the entire list -->
+
+            <!-- Electronics -->
+            <li class="list-group-item" style="border: none;">
+              <!-- Remove border from each item -->
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#electronics-dropdown" aria-expanded="false" aria-controls="electronics-dropdown" style="color: black;">Electronics</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#electronics-dropdown" aria-expanded="false" aria-controls="electronics-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="electronics-dropdown" style="border: none;">
+                <!-- Remove border from dropdown -->
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Mobile Phones</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Laptops</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Headphones</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Fashion -->
+            <li class="list-group-item" style="border: none;">
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#fashion-dropdown" aria-expanded="false" aria-controls="fashion-dropdown" style="color: black;">Fashion</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#fashion-dropdown" aria-expanded="false" aria-controls="fashion-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="fashion-dropdown" style="border: none;">
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Men's Clothing</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Women's Clothing</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Footwear</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Home & Kitchen -->
+            <li class="list-group-item" style="border: none;">
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#home-kitchen-dropdown" aria-expanded="false" aria-controls="home-kitchen-dropdown" style="color: black;">Home & Kitchen</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#home-kitchen-dropdown" aria-expanded="false" aria-controls="home-kitchen-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="home-kitchen-dropdown" style="border: none;">
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Furniture</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Home Decor</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Kitchen Tools</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Beauty & Personal Care -->
+            <li class="list-group-item" style="border: none;">
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#beauty-dropdown" aria-expanded="false" aria-controls="beauty-dropdown" style="color: black;">Beauty & Personal Care</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#beauty-dropdown" aria-expanded="false" aria-controls="beauty-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="beauty-dropdown" style="border: none;">
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Skin Care</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Hair Care</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Makeup</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Sports & Fitness -->
+            <li class="list-group-item" style="border: none;">
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#sports-dropdown" aria-expanded="false" aria-controls="sports-dropdown" style="color: black;">Sports & Fitness</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#sports-dropdown" aria-expanded="false" aria-controls="sports-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="sports-dropdown" style="border: none;">
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Gym Equipment</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Outdoor Sports</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Fitness Accessories</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Books -->
+            <li class="list-group-item" style="border: none;">
+              <div class="d-flex justify-content-between">
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#books-dropdown" aria-expanded="false" aria-controls="books-dropdown" style="color: black;">Books</a>
+                <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#books-dropdown" aria-expanded="false" aria-controls="books-dropdown" style="color: black;"><i class="fa fa-chevron-down"></i></button>
+              </div>
+              <ul class="collapse list-group ms-3 mt-2" id="books-dropdown" style="border: none;">
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Fiction</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Non-fiction</a>
+                </li>
+                <li class="list-group-item p-1" style="border: none;">
+                  <a href="#" style="color: black;">Children's Books</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Store Search -->
+        <div class="mb-4" id="store-search">
+          <h5>Store</h5>
+          <form method="get">
+            <div class="input-group">
+              <input type="text" class="form-control" name="search" placeholder="Search By Store Products..." value="{{ request.GET.search }}" />
+              {% comment %} <button class="btn btn-outline-secondary" type="submit">Search</button> {% endcomment %}
+            </div>
+          </form>
+        </div>
+
+        <!-- Price Filter -->
+        <div class="mb-4" id="price-filter">
+          <h5>Price Range</h5>
+          <form method="get">
+            <div class="form-group">
+              <input type="range" class="form-range" id="price_range" name="price_range" min="0" max="100000" step="10" value="{{ request.GET.price_range|default:500 }}" oninput="updatePriceRangeValue(this)" />
+              <span id="price_range_value">{{ request.GET.price_range|default:500 }}</span>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Filter</button>
+          </form>
+        </div>
+
+        <!-- Rating Filter -->
+        <div class="mb-4" id="rating-filter">
+          <h5>Rating</h5>
+          <form method="get">
+            <div class="form-group">
+              <!-- Star Rating -->
+              <div class="rating">
+                <span class="fa fa-star" data-value="1"></span>
+                <span class="fa fa-star" data-value="2"></span>
+                <span class="fa fa-star" data-value="3"></span>
+                <span class="fa fa-star" data-value="4"></span>
+                <span class="fa fa-star" data-value="5"></span>
+              </div>
+
+              <!-- Hidden Rating Input -->
+              <input type="hidden" id="rating" name="rating" value="{{ request.GET.rating|default:3.5 }}" />
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Filter</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right Main Content -->
+      {% comment %} <div class="col-md-9" id="category-main">
+        <h2 class="mb-4">Shop by Category</h2>
+        <div class="row">
+          {% for category in categories %}
+            <div class="col-md-4 col-sm-6 mb-4" id="category-card-{{ category.id }}">
+              <div class="card h-100 text-center shadow-sm">
+                <a href="{% url 'category_detail_and_listing' category.slug %}">
+                  {% if category.image %}
+                    <img src="{{ category.image.url }}" class="card-img-top img-fluid" alt="{{ category.name }}" />
+                  {% else %}
+                    <img src="{% static 'images/default-category.png' %}" class="card-img-top img-fluid" alt="No image" />
+                  {% endif %}
+                </a>
+                <div class="card-body">
+                  <h5 class="card-title">{{ category.name }}</h5>
+                  <p class="card-text small text-muted">{{ category.description|truncatewords:15 }}</p>
+                  <a href="{% url 'category_detail_and_listing' category.slug %}" class="btn btn-outline-primary btn-sm mt-2">Explore</a>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p>No categories available.</p>
+          {% endfor %}
+        </div>
+      </div> {% endcomment %}
+    </div>
+  </div>
+{% endblock %}

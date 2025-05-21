@@ -1,0 +1,27 @@
+/* category detail  */
+.hover-actions {
+  pointer-events: none;
+}
+
+.card:hover .hover-actions {
+  opacity: 1 !important;
+  pointer-events: all;
+}
+
+
+
+
+/* category listing  */
+.fa-star {
+  font-size: 18px;
+  color: gray;
+  cursor: pointer;
+}
+
+.fa-star.checked {
+  color: gold;
+}
+
+.rating {
+  display: flex;
+}

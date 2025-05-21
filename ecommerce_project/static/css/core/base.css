@@ -1,0 +1,131 @@
+/* === General Styles === */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #28a745;
+}
+
+/* === Button Styles === */
+.btn-success {
+    background-color: #18d243;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-dark:hover {
+    background-color: #343a40;
+}
+
+/* === Header Icons === */
+header a.position-relative .badge {
+    font-size: 10px;
+}
+
+/* === Hero Section === */
+section.bg-light {
+    background-color: #e6f2ea !important;
+    border-radius: 8px;
+}
+
+section.bg-light img {
+    border-radius: 12px;
+}
+
+/* === Footer === */
+footer {
+    background-color: #212529;
+    color: white;
+    font-size: 14px;
+}
+
+/* DropDowns CSS */
+/* Optional: Make sure dropdown menus don't stay open awkwardly */
+.dropdown-menu {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    visibility: hidden;
+}
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.dropdown-menu .dropdown:hover>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-left: 0.1rem;
+}
+
+.dropdown.dropend {
+    position: relative;
+}
+
+.dropdown.dropend>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+.content-container {
+    margin-left: 6rem;
+    margin-right: 6rem;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+    /* Fix any unwanted gap */
+}
+
+/* Center Mega Menu Dropdown */
+.mega-dropdown {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 100% !important;
+}
+
+/* Dropdown for guest */
+.guest-dropdown-hover .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-right: -5rem;
+    margin-top: 0.25rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1000;
+}
+
+.guest-dropdown-hover:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+@media (max-width: 992px) {
+    .content-container {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+}

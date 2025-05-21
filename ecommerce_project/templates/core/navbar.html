@@ -1,0 +1,242 @@
+{% load static %}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white" style="margin: 0 0 0 8rem;">
+  <div class="container-fluid px-4">
+    <!-- Mobile Toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"><span class="navbar-toggler-icon"></span></button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <!-- All Departments Dropdown -->
+      <div class="dropdown me-4">
+        <button class="btn btn-success" type="button" id="allDepartmentsDropdown" style="padding: 0.5rem 1.8rem;" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-bars me-1"></i> All Departments</button>
+        <ul class="dropdown-menu" aria-labelledby="allDepartmentsDropdown">
+          <li>
+            <a class="dropdown-item" href="#">Vegetables & Fruits</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Bakery & Dairy</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Beverages</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Beauty & Hygiene</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#">Household Items</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Main Navbar Links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Home</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">Home 1</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Home 2</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Home 3</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Home 4</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Home 5</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Shop Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">Shop 1</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 2</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 3</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 4</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 5</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 6</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 7</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 8</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 9</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Shop 10</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Stores Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Stores</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">Store 1</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Store 2</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Store 3</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Mega Menu Dropdown -->
+        <li class="nav-item dropdown position-static">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Mega Menu</a>
+          <div class="dropdown-menu mega-dropdown w-100 mt-0 border-0 shadow p-4" style="margin-left: -4rem;">
+            <div class="row">
+              <!-- Column 1 -->
+              <div class="col-md-3">
+                <h6 class="text-success fw-bold mb-2">Dairy, Bread & Eggs</h6>
+                <ul class="list-unstyled">
+                  <li>
+                    <a class="dropdown-item" href="#">Butter</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Milk Drinks</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Curd & Yogurt</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Eggs</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Buns & Bakery</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Cheese</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Column 2 -->
+              <div class="col-md-3">
+                <h6 class="text-success fw-bold mb-2">Breakfast & Instant Food</h6>
+                <ul class="list-unstyled">
+                  <li>
+                    <a class="dropdown-item" href="#">Breakfast Cereal</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Noodles, Pasta & Soup</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Frozen Veg Snacks</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Instant Mixes</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Fruit and Juices</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Column 3 -->
+              <div class="col-md-3">
+                <h6 class="text-success fw-bold mb-2">Cold Drinks & Juices</h6>
+                <ul class="list-unstyled">
+                  <li>
+                    <a class="dropdown-item" href="#">Soft Drinks</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Fruit Juices</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Coldpress</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Water & Ice Cubes</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">Soda & Mixers</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Column 4 - Image Promo -->
+              <div class="col-md-3 ms-n2">
+                <div class="position-relative bg-light p-3 rounded text-center">
+                  <img src="{% static 'images/offer-basket.png' %}" alt="Offer" class="img-fluid mb-2" style="width: 20rem; object-fit: contain; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); border-radius: 0.5rem; filter: brightness(50%);" />
+                  <div class="position-absolute top-0 start-50 translate-middle-x mt-5 text-center z-index-2">
+                    <p class="text-success fw-bold mb-3">Don't miss this offer today.</p>
+                    <span class="badge bg-warning text-dark">25% Off</span>
+                  </div>
+                  <a href="#" class="btn btn-success btn-sm position-absolute start-50 translate-middle-x z-index-2" style="bottom: 2.5rem;">Shop Now</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Pages Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pages</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">Page 1</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Page 2</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Page 3</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Page 4</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Page 5</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Page 6</a>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Dashboard Link -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dashboard</a>
+        </li>
+
+        <!-- Docs Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Docs</a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="#">API Docs</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#">Theme Docs</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

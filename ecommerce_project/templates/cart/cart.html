@@ -1,0 +1,220 @@
+{% extends 'cart/cart_navbar.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2>Your Shopping Cart</h2>
+
+    {% if cart_items %}
+      <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h4 class="mb-4">Shopping Cart</h4>
+              {% for item in cart_items %}
+                <div class="d-flex align-items-start border-bottom py-3">
+                  <a href="{% url 'product_detail' item.product.slug %}"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-thumbnail me-3" style="width: 100px;" /></a>
+                  <div class="flex-grow-1">
+                    <a href="{% url 'product_detail' item.product.slug %}" style="color: black; text-decoration: none;"><h6 class="mb-1">{{ item.product.name }}</h6></a>
+                    <p class="text-muted small mb-1">{{ item.product.weight }}</p>
+                    <p class="fw-semibold mb-2">₹{{ item.product.price }}</p>
+
+                    <!-- Update Quantity Form -->
+                    <form method="POST" action="{% url 'update_cart_quantity' item.product.id %}" class="d-flex align-items-center">
+                      {% csrf_token %}
+
+                      {% if item.quantity <= 1 %}
+                        <button type="submit" name="action" value="decrease" class="btn btn-outline-secondary btn-sm" disabled>-</button>
+                      {% else %}
+                        <button type="submit" name="action" value="decrease" class="btn btn-outline-secondary btn-sm">-</button>
+                      {% endif %}
+
+                      <span class="mx-2">{{ item.quantity }}</span>
+
+                      {% if item.quantity >= 20 %}
+                        <button type="submit" name="action" value="increase" class="btn btn-outline-secondary btn-sm" disabled>+</button>
+                      {% else %}
+                        <button type="submit" name="action" value="increase" class="btn btn-outline-secondary btn-sm">+</button>
+                      {% endif %}
+                    </form>
+
+                    <div class="d-flex gap-2 mt-2">
+                      <!-- Save for Later -->
+                      <form method="POST" action="#">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">Save for Later</button>
+                      </form>
+
+                      <!-- Remove -->
+                      <form method="POST" action="{% url 'remove_from_cart' item.product.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="text-end fw-bold">₹{{ item.subtotal }}</div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Summary -->
+        <div class="col-lg-4">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="mb-3">Price Details</h5>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Price ({{ cart_items|length }} items)</span>
+                <span>₹{{ total }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Delivery Charges</span>
+                <span class="text-success">Free</span>
+              </div>
+              <hr />
+              <div class="d-flex justify-content-between fw-bold mb-3">
+                <span>Total Amount</span>
+                <span>₹{{ total }}</span>
+              </div>
+              <a href="{% url 'checkout' %}" class="btn btn-success w-100">Proceed to Checkout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <!-- Empty Cart -->
+      <div style="text-align: center; margin-top: 2rem;">
+        <img src="{% static 'IMAGES/Cart.png' %}" alt="Empty Cart" class="empty-cart-img" />
+        <p style="font-size: 1.5rem; margin-top: 1rem;">Your cart is empty!</p>
+        <p>Check out some of our popular items or continue shopping:</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-3">Continue Shopping</a>
+      </div>
+    {% endif %}
+
+    <!-- Recently Viewed -->
+    <div class="my-5 position-relative">
+      <h4 class="mb-3">Recently Viewed</h4>
+
+      {% if recently_viewed_groups %}
+        <!-- Carousel Controls (below heading) -->
+        <div class="d-flex justify-content-between mb-3 px-3" style="position: absolute; top: 0.4rem; right: 0; left: 0; z-index: 10;">
+          <button class="carousel-control-prev custom-carousel-btn" type="button" data-bs-target="#recentlyViewedCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon custom-carousel-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next custom-carousel-btn" type="button" data-bs-target="#recentlyViewedCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon custom-carousel-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <!-- Carousel Items -->
+        <div id="recentlyViewedCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            {% for group in recently_viewed_groups %}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                  {% for product in group %}
+                    <div class="card" style="width: 18rem;">
+                      <div class="position-relative overflow-hidden">
+                        {% if product.image %}
+                          <a href="{% url 'product_detail' product.slug %}"><img src="{{ product.image.url }}" class="card-img-top p-3" style="height: 170px; object-fit: contain;" alt="{{ product.name }}" /></a>
+                        {% endif %}
+                      </div>
+                      <div class="card-body text-center p-2">
+                        <small class="text-muted d-block mb-1">{{ product.category }}</small>
+                        <h6 class="text-dark"><a href="{% url 'product_detail' product.slug %}" class="text-decoration-none text-dark hover-success">{{ product.name }}</a></h6>
+                        <p class="text-success fw-bold mb-2">₹{{ product.price }}</p>
+                        <div class="row gx-2">
+                          <div class="col">
+                            <form method="post" action="{% url 'add_to_cart' product.id %}">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                            </form>
+                          </div>
+                          <div class="col">
+                            <form method="post" action="#">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-success w-100">Buy Now</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <p class="text-muted">No recently viewed products.</p>
+      {% endif %}
+    </div>
+
+    <!-- Similar Products -->
+    <!-- Similar Products Section -->
+    <div class="my-5">
+      <h4 class="mb-3">Similar Products</h4>
+      {% if similar_products %}
+        <div class="d-flex flex-wrap gap-4 justify-content-start">
+          {% for product in similar_products %}
+            <div class="card" style="width: 18rem;">
+              <div class="position-relative overflow-hidden">
+                {% if product.image %}
+                  <a href="{% url 'product_detail' product.slug %}"><img src="{{ product.image.url }}" class="card-img-top p-3" style="height: 170px; object-fit: contain;" alt="{{ product.name }}" /></a>
+                {% endif %}
+              </div>
+              <div class="card-body text-center p-2">
+                <small class="text-muted d-block mb-1">{{ product.category }}</small>
+                <h6 class="text-dark"><a href="{% url 'product_detail' product.slug %}" class="text-decoration-none text-dark hover-success">{{ product.name }}</a></h6>
+                <p class="text-success fw-bold mb-2">₹{{ product.price }}</p>
+                <div class="row gx-2">
+                  <div class="col">
+                    <form method="post" action="{% url 'add_to_cart' product.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-outline-primary w-100">Add to Cart</button>
+                    </form>
+                  </div>
+                  <div class="col">
+                    <form method="post" action="{% url 'checkout' %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-sm btn-success w-100">Buy Now</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-muted">No similar products available.</p>
+      {% endif %}
+    </div>
+
+    <!-- Save for Later -->
+    {% if save_for_later %}
+      <div class="my-5">
+        <h4>Save for Later</h4>
+        <div class="row">
+          {% for product in save_for_later %}
+            <div class="col-md-4">
+              <div class="card">
+                <a href="{% url 'product_detail' product.id %}"><img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" /></a>
+                <div class="card-body">
+                  <a href="{% url 'product_detail' product.id %}" style="color: black; text-decoration: none;"><h5 class="card-title">{{ product.name }}</h5></a>
+                  <p class="card-text">₹{{ product.price }}</p>
+                  <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View Details</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <link rel="stylesheet" href="{% static 'css/cart/cart.css' %}" />
+{% endblock %}

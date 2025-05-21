@@ -1,0 +1,193 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Address List with Remove buttons OUTSIDE the checkout form -->
+  <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5>Select Delivery Address</h5>
+    </div>
+    <div class="card-body">
+      {% if user_addresses %}
+        {% for address in user_addresses %}
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="address" id="address{{ forloop.counter }}"
+                     value="{{ address.id }}" {% if forloop.first %}checked{% endif %} required>
+              <label class="form-check-label" for="address{{ forloop.counter }}">
+                <strong>{{ address.full_name }}</strong><br>
+                {{ address.address }}, {{ address.city }}, {{ address.state }} - {{ address.zip_code }}<br>
+                Phone: {{ address.phone }}
+              </label>
+            </div>
+            <div>
+              <form method="POST" action="{% url 'remove_address' address.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+        <button type="button" class="btn btn-link" id="showNewAddressFormBtn">Add another address</button>
+      {% else %}
+        <p>No saved addresses.</p>
+        <button type="button" class="btn btn-link" id="showNewAddressFormBtn">Add one now</button>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Now the main checkout form -->
+  <form method="POST" action="{% url 'checkout' %}">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-lg-8">
+
+        <!-- New Address Form (Hidden initially) -->
+        <div class="card mb-4 d-none" id="newAddressForm">
+          <div class="card-header bg-info text-white">
+            <h5>Add New Address</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="full_name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name">
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Street Address</label>
+              <input type="text" class="form-control" id="address" name="address" placeholder="Street Address">
+            </div>
+            <div class="mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" name="city" placeholder="City">
+            </div>
+            <div class="mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" name="state" placeholder="State">
+            </div>
+            <div class="mb-3">
+              <label for="zip_code" class="form-label">ZIP / Postal Code</label>
+              <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="ZIP Code">
+            </div>
+            <div class="mb-3">
+              <label for="country" class="form-label">Country</label>
+              <input type="text" class="form-control" id="country" name="country" placeholder="Country">
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Card -->
+        <div class="card">
+          <div class="card-header bg-success text-white">
+            <h5>Payment Options</h5>
+          </div>
+          <div class="card-body">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" id="cod" value="COD" checked required>
+              <label class="form-check-label" for="cod">Cash on Delivery</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" id="upi" value="UPI">
+              <label class="form-check-label" for="upi">UPI</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="payment_method" id="card" value="Card">
+              <label class="form-check-label" for="card">Credit/Debit Card</label>
+            </div>
+
+            <!-- Dynamic Fields -->
+            <div id="upi-input" class="mt-3 d-none">
+              <label for="upi_id" class="form-label">Enter UPI ID</label>
+              <input type="text" name="upi_id" id="upi_id" class="form-control" placeholder="example@upi">
+            </div>
+
+            <div id="card-input" class="mt-3 d-none">
+              <label class="form-label">Card Number</label>
+              <input type="text" name="card_number" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
+              <label class="form-label mt-2">Expiry Date</label>
+              <input type="month" name="card_expiry" class="form-control">
+              <label class="form-label mt-2">CVV</label>
+              <input type="password" name="card_cvv" class="form-control" maxlength="3">
+            </div>
+
+            <div class="text-end mt-4">
+              <button type="submit" class="btn btn-success btn-lg">Place Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section: Order Summary -->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h5>Order Summary</h5>
+          </div>
+          <div class="card-body">
+            {% if cart_items %}
+              {% for item in cart_items %}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div>
+                    <h6 class="mb-0">{{ item.product.name }}</h6>
+                    <small>Qty: {{ item.quantity }}</small>
+                  </div>
+                  <strong>₹{{ item.subtotal }}</strong>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>Your cart is empty.</p>
+            {% endif %}
+            <hr>
+            <div class="d-flex justify-content-between">
+              <strong>Total</strong>
+              <strong>₹{{ total_price }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- JS for Payment Method Toggle and New Address Form Toggle -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Payment Method Toggle
+    const upiInput = document.getElementById('upi-input');
+    const cardInput = document.getElementById('card-input');
+
+    function toggleInputs(value) {
+      upiInput.classList.toggle('d-none', value !== 'UPI');
+      cardInput.classList.toggle('d-none', value !== 'Card');
+    }
+
+    document.querySelectorAll('input[name="payment_method"]').forEach((input) => {
+      input.addEventListener("change", (e) => {
+        toggleInputs(e.target.value);
+      });
+    });
+
+    const selected = document.querySelector('input[name="payment_method"]:checked');
+    if (selected) toggleInputs(selected.value);
+
+    // New Address Form Toggle
+    const newAddressBtn = document.getElementById('showNewAddressFormBtn');
+    const newAddressForm = document.getElementById('newAddressForm');
+
+    if (newAddressBtn && newAddressForm) {
+      newAddressBtn.addEventListener('click', () => {
+        newAddressForm.classList.toggle('d-none');
+        // If showing new address form, uncheck all saved addresses
+        if (!newAddressForm.classList.contains('d-none')) {
+          document.querySelectorAll('input[name="address"]').forEach(input => input.checked = false);
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

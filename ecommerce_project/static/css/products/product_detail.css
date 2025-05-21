@@ -1,0 +1,54 @@
+.product-img-zoom {
+    transition: transform 0.3s ease;
+}
+
+.product-img-zoom:hover {
+    transform: scale(1.1);
+    cursor: zoom-in;
+}
+
+.table.no-border {
+    border: none;
+}
+
+.table.no-border th,
+.table.no-border td {
+    border: none !important;
+}
+
+.share-icons {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+}
+
+.share-btn:hover .share-icons {
+    display: block;
+}
+
+.share-icons a {
+    font-size: 1.2rem;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.share-icons a:hover {
+    color: #0056b3;
+}
+
+.share-btn i {
+    font-size: 0.8rem;
+    /* Adjust this value to make the icon smaller or bigger */
+}
